@@ -43,5 +43,8 @@ jobs:
 
       - name: Executar pytest
         env:
-          DATABASE_URL: postgresql://postgres:admin@localhost:5432/pdsi2@prot
+          DB_USER: postgres
+          DB_PASSWORD: ufuluiz123
+          DB_DATABASE: pdsi2_prot
+          DB_HOST: localhost
         run: pytest teste.py
