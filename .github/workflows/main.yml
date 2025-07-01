@@ -11,10 +11,14 @@ jobs:
     services:
       postgres:
         image: postgres:13
+        env:
+          POSTGRES_USER: ${{ secrets.DB_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.DB_DATABASE }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U ${{ secrets.DB_USER }}"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -36,16 +40,6 @@ jobs:
 
       - name: Aguardar PostgreSQL
         run: sleep 15
-
-      - name: Criar usuário e banco no PostgreSQL com secrets
-        run: |
-          sudo apt-get install -y postgresql-client
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';"
-          PGPASSWORD=postgres psql -h localhost -U postgres -c "CREATE DATABASE $DB_DATABASE OWNER $DB_USER;"
-        env:
-          DB_USER: ${{ secrets.DB_USER }}
-          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          DB_DATABASE: ${{ secrets.DB_DATABASE }}
 
       - name: Executar pytest
         env:
