@@ -12,9 +12,9 @@ jobs:
       postgres:
         image: postgres:13
         env:
-          POSTGRES_USER: user
-          POSTGRES_PASSWORD: pass
-          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ufuluiz123
+          POSTGRES_DB: pdsi2_prot
         ports:
           - 5432:5432
         options: >-
