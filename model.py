@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP
+from sqlalchemy import Column, Integer, String, Boolean, TIMESTAMP, DateTime
 from sqlalchemy.sql import text
 from database import Base
+from datetime import datetime
 
 class Model_Mensagem(Base):
     __tablename__ = 'teste'
@@ -10,3 +11,11 @@ class Model_Mensagem(Base):
     conteudo = Column(String, nullable=False)
     publicada = Column(Boolean, server_default='True', nullable=False)
     created_at = Column(TIMESTAMP(timezone=True), server_default=text('now()'), nullable=False)
+
+class Menu(Base):
+    __tablename__ = 'menu'
+
+    id = Column(Integer, primary_key=True, index=True)
+    menuNav = Column(String, nullable=False)
+    link = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
