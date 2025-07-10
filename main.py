@@ -8,6 +8,8 @@ from model import Menu
 from bs4 import BeautifulSoup
 import requests
 from datetime import datetime
+from typing import List
+from fastapi.middleware.cors import CORSMiddleware
 
 model.Base.metadata.create_all(bind=engine)
 
@@ -62,3 +64,20 @@ def scrape_and_save(db: Session = Depends(get_db)):
 
     db.commit()
     return {"status": f"{inseridos} menus inseridos com sucesso"}
+
+@app.get("/mensagens", response_model=List[classes.Mensagem], status_code=status.HTTP_200_OK)
+async def buscar_valores(db: Session = Depends(get_db), skip: int = 0, limit: int=100):
+    mensagens = db.query(model.Model_Mensagem).offset(skip).limit(limit).all()
+    return mensagens
+
+origins = [
+    'http://localhost:3000'
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
